@@ -9,14 +9,14 @@ public class ServerThread extends Thread {
 
     private int clientId;
 
-    private Socket Socket;
+    private Socket socket;
 
     private DataInputStream in;
 
     private DataOutputStream out;
 
     public ServerThread(Socket socket) {
-        this.Socket = socket;
+        this.socket = socket;
         try {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
@@ -47,6 +47,7 @@ public class ServerThread extends Thread {
     }
     
     public void sendMessage(String msg) {
+        System.out.println("rame");
         try {
             out.writeUTF(msg);
         } catch(IOException ex) {

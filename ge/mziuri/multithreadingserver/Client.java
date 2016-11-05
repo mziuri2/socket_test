@@ -13,16 +13,18 @@ public class Client {
         
         try {
             Socket socket = new Socket("localhost", 8080);
-            DataInputStream in = new DataInputStream(socket.getInputStream());
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            final DataInputStream in = new DataInputStream(socket.getInputStream());
+            final DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             Scanner scanner = new Scanner(System.in);
             Thread thread = new Thread(){
                 
                 @Override
                 public void run() {
                     try {
-                        String msg = in.readUTF();
-                        System.out.println(msg);
+                        while (true) {
+                            String msg = in.readUTF();
+                            System.out.println(msg);
+                        }
                     } catch(IOException ex) {
                         System.out.println(ex.getMessage());
                     }
