@@ -12,7 +12,7 @@ public class Client {
     public static void main(String[] args) {
         
         try {
-            Socket socket = new Socket("localhost", 8080);
+            Socket socket = new Socket("localhost", 8659);
             final DataInputStream in = new DataInputStream(socket.getInputStream());
             final DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             Scanner scanner = new Scanner(System.in);
@@ -33,7 +33,15 @@ public class Client {
             thread.start();
             while (scanner.hasNextLine()) {
                 String text = scanner.nextLine();
-                out.writeUTF(text);
+                if (text.equals("exit")) {
+                    in.close();
+                    out.close();
+                    scanner.close();
+                    socket.close();
+                    break;
+                } else {
+                    out.writeUTF(text);
+                }
             }
         } catch(IOException ex) {
             System.out.println(ex.getMessage());

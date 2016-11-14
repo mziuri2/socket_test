@@ -39,6 +39,10 @@ public class ServerThread extends Thread {
         while (true) {
             try {
                 String text = in.readUTF();
+                if (text.equals("exit")) {
+                    closeConnection();
+                    break;
+                }
                 Server.sendMessageToAllClient(text, clientId);
             } catch(IOException ex) {
                 System.out.println(ex.getMessage());
@@ -47,10 +51,19 @@ public class ServerThread extends Thread {
     }
     
     public void sendMessage(String msg) {
-        System.out.println("rame");
         try {
             out.writeUTF(msg);
         } catch(IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    private void closeConnection() {
+        try {
+            in.close();
+            out.close();
+            socket.close();
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
