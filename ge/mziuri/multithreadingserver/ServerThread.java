@@ -36,7 +36,7 @@ public class ServerThread extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (socket.isConnected()) {
             try {
                 String text = in.readUTF();
                 if (text.equals("exit")) {
@@ -60,6 +60,7 @@ public class ServerThread extends Thread {
 
     private void closeConnection() {
         try {
+            Server.deleteClientFromList(clientId);
             in.close();
             out.close();
             socket.close();

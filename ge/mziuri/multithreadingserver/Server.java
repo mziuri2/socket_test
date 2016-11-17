@@ -38,4 +38,13 @@ public class Server {
         }
     }
     
+    public static void deleteClientFromList(int id) {
+        for (ServerThread st : clientList) {
+            if (st.getClientId() == id) {
+                clientList.remove(st);
+                break;
+            }
+        }
+    }
+    
 }

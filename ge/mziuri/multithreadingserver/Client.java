@@ -9,12 +9,15 @@ import java.util.Scanner;
 
 public class Client {
     
+    static DataInputStream in = null;
+    static DataOutputStream out = null;
+    static Socket socket = null;
+    
     public static void main(String[] args) {
-        
         try {
-            Socket socket = new Socket("localhost", 8659);
-            final DataInputStream in = new DataInputStream(socket.getInputStream());
-            final DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            socket = new Socket("localhost", 8659);
+            in = new DataInputStream(socket.getInputStream());
+            out = new DataOutputStream(socket.getOutputStream());
             Scanner scanner = new Scanner(System.in);
             Thread thread = new Thread(){
                 
@@ -33,18 +36,21 @@ public class Client {
             thread.start();
             while (scanner.hasNextLine()) {
                 String text = scanner.nextLine();
-                if (text.equals("exit")) {
-                    in.close();
-                    out.close();
-                    scanner.close();
-                    socket.close();
+                out.writeUTF(text);
+                if (text.equals("exit")) { 
                     break;
-                } else {
-                    out.writeUTF(text);
                 }
             }
         } catch(IOException ex) {
             System.out.println(ex.getMessage());
+        } finally {
+            try {
+                in.close();
+                out.close();
+                socket.close();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
         
     }
